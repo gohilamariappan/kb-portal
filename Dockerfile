@@ -26,6 +26,9 @@ COPY --from=build --chown=appuser:appuser /app/dist/kb-survey/ ./dist/
 # Install serve globally (done as root)
 RUN npm install -g serve
 
+RUN apt-get update && apt-get install -y libcap2-bin \
+    && setcap 'cap_net_bind_service=+ep' /usr/local/bin/node
+
 # Change dist folder ownership
 RUN chown -R appuser:appuser /usr/src/app
 
